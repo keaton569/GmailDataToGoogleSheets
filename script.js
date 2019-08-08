@@ -124,6 +124,7 @@ function getInfo_(q) {
     for (var i in threads) {
         var msgs = threads[i].getMessages();
        for (var j in msgs) {
+         //if message is not starred 
          if(!msgs[j].isStarred()){
            
            var message = msgs[j];
