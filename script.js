@@ -1,7 +1,6 @@
-////////////////////////
-RUN WITH THE MENU CREATED IN THE SPREADSHEET
-////////////////////////
-
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//STORAGE ARRAYS
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 var SEARCH_QUERY = "to:me newer_than:5d";
@@ -17,6 +16,16 @@ var hasAttachments = [];
 
 
 
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//CREATES MENU ITEM WHEN DOCUMENT IS OPENED AND FULLY LOADED
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
 function onOpen() {
   var ui = SpreadsheetApp.getUi();
   // Or DocumentApp or FormApp.
@@ -26,6 +35,20 @@ function onOpen() {
 }
 
 
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//RUNS THE FULL CODE WHEN THE MENU IS PRESSED
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 function menuItem1() {
@@ -44,6 +67,17 @@ function menuItem1() {
 
 
 
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//ADDS HEADER INFO - IF THERE IS NO HEADER
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 function addHeader(Sheet1){
@@ -66,17 +100,24 @@ function addHeader(Sheet1){
         Sheet1.getRange(Sheet1.getLastRow(), i).setFontSize(28);
         i++;
          }
-        
     };
-    
   };
-  
-  
 }
 
 
 
-    
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//GETS INFO FROM EMAIL AND STORES IN ARRAYS
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
  
 function getInfo_(q) {
   var threads = GmailApp.search(q);
@@ -85,34 +126,19 @@ function getInfo_(q) {
        for (var j in msgs) {
          if(!msgs[j].isStarred()){
 
-           this.bodys.push([msgs[j].getPlainBody().replace(/<.*?>/g, '')
-                       .replace(/^\s*\n/gm, '').replace(/^\s*/gm, '').replace(/\s*\n/gm, '\n')]);
-         
-           this.subjects.push([msgs[j].getSubject().replace(/<.*?>/g, '\n')
-                        .replace(/^\s*\n/gm, '').replace(/^\s*/gm, '').replace(/\s*\n/gm, '\n')]);
-         
-         
+           this.bodys.push([msgs[j].getPlainBody().replace(/<.*?>/g, '').replace(/^\s*\n/gm, '').replace(/^\s*/gm, '').replace(/\s*\n/gm, '\n')]);
+           this.subjects.push([msgs[j].getSubject().replace(/<.*?>/g, '\n').replace(/^\s*\n/gm, '').replace(/^\s*/gm, '').replace(/\s*\n/gm, '\n')]);
            this.dates.push([msgs[j].getDate()]);
-         
-         
-           this.names.push([msgs[j].getFrom().replace(/<.*?>/g, '')
-                       .replace(/^\s*\n/gm, '').replace(/^\s*/gm, '').replace(/\s*\n/gm, '\n')]);
-         
-         
+           this.names.push([msgs[j].getFrom().replace(/<.*?>/g, '').replace(/^\s*\n/gm, '').replace(/^\s*/gm, '').replace(/\s*\n/gm, '\n')]);
            this.froms.push([msgs[j].getFrom().replace(/^.+</, '').replace(">", '') ]);
-         
-         
+           this.emailPath.push(['https://mail.google.com/mail/u/0/#inbox/' + msgs[j].getId()]);
+           msgs[j].star();
+           
            if(msgs[j].getAttachments()){
              this.hasAttachments.push([msgs[j].getAttachments()])
            }else{
              this.hasAttachments.push([" "])
            };  
-         
-         
-           this.emailPath.push(['https://mail.google.com/mail/u/0/#inbox/' + msgs[j].getId()]);
-         
-           msgs[j].star();
-         
          }
        }
     }
@@ -124,6 +150,13 @@ function getInfo_(q) {
 
 
 
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//APPENDS ARRAY INFO TO THE SPREADSHEET
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 function appendData_(Sheet1, array2dFroms, array2dSubjects, array2dBodys, array2dNames, array2dDates, array2dURL, array2dAttachments) {
