@@ -52,7 +52,7 @@ function onOpen() {
 
 
 function menuItem1() {
-  //SpreadsheetApp.getActiveSheet().clear();
+  SpreadsheetApp.getActiveSheet().clear();
   
   
   addHeader(SpreadsheetApp.getActiveSheet());
@@ -125,17 +125,19 @@ function getInfo_(q) {
         var msgs = threads[i].getMessages();
        for (var j in msgs) {
          if(!msgs[j].isStarred()){
+           
+           var message = msgs[j];
 
-           this.bodys.push([msgs[j].getPlainBody().replace(/<.*?>/g, '').replace(/^\s*\n/gm, '').replace(/^\s*/gm, '').replace(/\s*\n/gm, '\n')]);
-           this.subjects.push([msgs[j].getSubject().replace(/<.*?>/g, '\n').replace(/^\s*\n/gm, '').replace(/^\s*/gm, '').replace(/\s*\n/gm, '\n')]);
-           this.dates.push([msgs[j].getDate()]);
-           this.names.push([msgs[j].getFrom().replace(/<.*?>/g, '').replace(/^\s*\n/gm, '').replace(/^\s*/gm, '').replace(/\s*\n/gm, '\n')]);
-           this.froms.push([msgs[j].getFrom().replace(/^.+</, '').replace(">", '') ]);
-           this.emailPath.push(['https://mail.google.com/mail/u/0/#inbox/' + msgs[j].getId()]);
-           msgs[j].star();
+           this.bodys.push([message.getPlainBody().replace(/<.*?>/g, '').replace(/^\s*\n/gm, '').replace(/^\s*/gm, '').replace(/\s*\n/gm, '\n')]);
+           this.subjects.push([message.getSubject().replace(/<.*?>/g, '\n').replace(/^\s*\n/gm, '').replace(/^\s*/gm, '').replace(/\s*\n/gm, '\n')]);
+           this.dates.push([message.getDate()]);
+           this.names.push([message.getFrom().replace(/<.*?>/g, '').replace(/^\s*\n/gm, '').replace(/^\s*/gm, '').replace(/\s*\n/gm, '\n')]);
+           this.froms.push([message.getFrom().replace(/^.+</, '').replace(">", '') ]);
+           this.emailPath.push(['https://mail.google.com/mail/u/0/#inbox/' + message.getId()]);
+           message.star();
            
            if(msgs[j].getAttachments()){
-             this.hasAttachments.push([msgs[j].getAttachments()])
+             this.hasAttachments.push([message.getAttachments()])
            }else{
              this.hasAttachments.push([" "])
            };  
